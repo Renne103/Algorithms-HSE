@@ -1,0 +1,3 @@
+C:/Users/Alina/CLionProjects/Algorithms_Msk/cmake-build-debug/CMakeFiles/Algorithms_Msk.dir
+C:/Users/Alina/CLionProjects/Algorithms_Msk/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Alina/CLionProjects/Algorithms_Msk/cmake-build-debug/CMakeFiles/rebuild_cache.dir
