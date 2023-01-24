@@ -1,0 +1,31 @@
+#include <iostream>
+#include <cmath>
+long double rightBoard(long double c) {
+    long double x = c * 2;
+    while (x * x + sqrt(x) < c) {
+        x *= 2;
+    }
+    return x;
+}
+long double binarySearch(long double c) {
+    long double left = 0.0;
+    long double right = rightBoard(c);
+    const double epsilon = 1e-10;
+    while (fabs(right - left) > epsilon) {
+        long double mid = (left + right) / 2.0;
+        if ((mid * mid + sqrt(mid)) - c < 0) {
+            left = mid;
+        } else {
+            right = mid;
+        }
+    }
+    return (left + right) / 2.0;
+}
+
+int main() {
+    long double c;
+    std::cin >> c;
+    std::fixed;
+    std::cout.precision(7);
+    std::cout << binarySearch(c);
+}
