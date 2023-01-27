@@ -1,0 +1,34 @@
+#include <iostream>
+
+int main() {
+    int n;
+    std::cin >> n;
+    n += 1;
+    int *arr_n = new int[n]();
+    // количество нажатий, выдерживаемых i-ой клавишей.
+    for (int i = 1; i < n; ++i) {
+        int num;
+        std::cin >> num;
+        arr_n[i] = num;
+    }
+    int k;
+    std::cin >> k;
+    k += 1;
+    int *arr_k = new int[k]();
+    // массив количества нажатий каждой отдельной клавиши
+    for (int i = 1; i < k; ++i) {
+        int num;
+        std::cin >> num;
+        arr_k[num] += 1;
+    }
+    for (int i = 1; i < n; ++i) {
+        if (arr_k[i] > arr_n[i]) {
+            std::cout << "yes" << std::endl;
+        }
+        if (arr_k[i] <= arr_n[i]) {
+            std::cout << "no" << std::endl;
+        }
+    }
+    delete[] arr_n;
+    delete[] arr_k;
+}
