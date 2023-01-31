@@ -1,0 +1,64 @@
+#include <iostream>
+
+int main() {
+    int n;
+    std::cin >> n;
+    int *arr = new int[91]();
+    for (int i = 0; i < n; ++i) {
+        char l;
+        std::cin >> l;
+        arr[l] += 1;
+    }
+    // A = 65, Z = 90
+    bool flag = false;
+    int count_rep = 0;
+    for (int i = 65; i < 91; ++i) {
+        if (arr[i] % 2 != 0) {
+            flag = true;
+            count_rep += 1;
+        }
+    }
+    if (flag == false) {
+        for (int i = 65; i < 91; ++i) {
+            int count = arr[i] / 2;
+            while (count != 0) {
+                std::cout << char(i);
+                count--;
+            }
+        }
+        for (int i = 90; i > 64; --i) {
+            int count = arr[i] / 2;
+            while (count != 0) {
+                std::cout << char(i);
+                count--;
+            }
+        }
+    } else {
+        if (count_rep == n) {
+            for (int i = 65; i < 91; ++i) {
+                if (arr[i] != 0) {
+                    std::cout << char(i);
+                    break;
+                }
+            }
+        } else {
+            for (int i = 65; i < 91; ++i) {
+                for (int j = 0; j < arr[i] / 2; ++j) {
+                    std::cout << char(i);
+                }
+            }
+            for (int i = 65; i < 91; ++i) {
+                if (arr[i] % 2 != 0) {
+                    std::cout << char(i);
+                    break;
+                }
+            }
+            for (int i = 90; i > 64; --i) {
+                for (int j = 0; j < arr[i] / 2; ++j) {
+                    std::cout << char(i);
+                }
+            }
+        }
+    }
+    delete[] arr;
+}
