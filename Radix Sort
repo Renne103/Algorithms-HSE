@@ -1,0 +1,66 @@
+#include <iostream>
+#include <cmath>
+
+struct Pair {
+    int value;
+    int id;
+};
+
+void countingSort(int64_t n, Pair *a, int64_t bit) {
+    Pair *a_sorted = new Pair[n]();
+    auto *c = new int64_t[256]();
+    for (int64_t i = 0; i < n; ++i) {
+        ++c[((a[i].value) / static_cast<int64_t>(std::pow(256, bit))) % 256];
+    }
+    // подсчитывается количество элементов меньших maximum
+    for (int64_t j = 8; j >= 0; --j) {
+        c[j] += c[j + 1];
+    }
+    // сортируем по разряду
+    for (int64_t i = n - 1; i > -1; --i) {
+        a_sorted[c[((a[i].value) / static_cast<int64_t>(std::pow(256, bit))) % 256] - 1] = a[i];
+        --c[((a[i].value) / static_cast<int64_t>(std::pow(256, bit))) % 256];
+    }
+    for (int64_t i = 0; i < n; ++i) {
+        a[i] = a_sorted[i];
+    }
+    delete[] c;
+    delete[] a_sorted;
+}
+
+void radixSort(int64_t n, Pair *a) {
+    int64_t maximum = -2147483647;
+    for (int64_t i = 0; i < n; ++i) {
+        int64_t capacity, id;
+        std::cin >> id >> capacity;
+        a[i].value = capacity;
+        a[i].id = id;
+        if (capacity > maximum) {
+            maximum = capacity;
+        }
+    }
+    int64_t bit = 0;
+    while (maximum > 0) {
+        countingSort(n, a, bit);
+        bit += 1;
+        maximum /= 256;
+    }
+    for (int64_t i = 0; i < n; ++i) {
+        std::cout << a[i].id << '\t' << a[i].value << '\n';
+    }
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+
+    int64_t n;
+    std::cin >> n;
+    if (n == 0) {
+        return 0;
+    }
+    Pair *a = new Pair[n]();
+    radixSort(n, a);
+    delete[] a;
+}
