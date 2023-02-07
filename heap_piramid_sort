@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+// взято из презентации
+
+void heapify(int i, std::vector<int> &vec, int n) {
+    int left_child;
+    int right_child;
+    int largest_child;
+    largest_child = i;
+    left_child = 2 * i + 1;
+    right_child = 2 * i + 2;
+    if (left_child < n && vec[left_child] > vec[largest_child]) {
+        largest_child = left_child;
+    }
+    if (right_child < n && vec[right_child] > vec[largest_child]) {
+        largest_child = right_child;
+    }
+    if (largest_child != i) {
+        int cur = vec[i];
+        vec[i] = vec[largest_child];
+        vec[largest_child] = cur;
+        heapify(largest_child, vec, n);
+    }
+}
+
+void buildHeap(std::vector<int> &vec, int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(i, vec, n);
+    }
+}
+
+void print(std::vector<int> &vec, int n) {
+    for (int i = 0; i < n; i++) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void getMax(std::vector<int> &vec, int n) {
+    for (int i = n - 1; i >= 0; i--) {
+        int result = vec[0];
+        vec[0] = vec[i];
+        vec[i] = result;
+        heapify(0, vec, i);
+    }
+}
+
+void heapSort(std::vector<int> &vec, int n) {
+    buildHeap(vec, n);
+    getMax(vec, n);
+}
+
+int main() {
+    int n;
+    std::cin >> n;
+    std::vector<int> vec;
+    for (int i = 0; i < n; ++i) {
+        int num;
+        std::cin >> num;
+        vec.push_back(num);
+    }
+    heapSort(vec, n);
+    print(vec, n);
+}
