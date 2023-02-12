@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// взято из презентации 21 слайд +
+// https://ru.algorithmica.org/cs/decomposition/scanline/
+struct Event {
+    int x;
+    int event_type;
+    int index;
+};
+
+void print(std::vector<Event> vec, int m) {
+    for (int i = 0; i < m; ++i) {
+        std::cout << vec[i].x << " ";
+    }
+}
+
+void scanLine(int m, int n) {
+    std::vector<Event> sections;
+    std::vector<Event> points;
+    int n_multi = 2 * n;
+    for (int i = 0; i < n; ++i) {
+        int left;
+        std::cin >> left;
+        int right;
+        std::cin >> right;
+        sections.push_back({left, 1});
+        sections.push_back({right, -1});
+    }
+    for (int i = 0; i < m; ++i) {
+        int p;
+        std::cin >> p;
+        sections.push_back({p, 0, i});
+        points.push_back({p, 0, i});
+    }
+    sort(sections.begin(), sections.end(), [](Event a, Event b) {
+        return (a.x < b.x || (a.x == b.x && a.event_type > b.event_type));
+    });
+    int cnt = 0;
+    // проход по массиву сканирующей линии
+    for (int i = 0; i < n_multi + m; ++i) {
+        if (sections[i].event_type == 1) {
+            cnt += 1;
+        }
+        if (sections[i].event_type == 0) {
+            points[sections[i].index].x = cnt;
+        }
+        if (sections[i].event_type == -1) {
+            cnt -= 1;
+        }
+    }
+    print(points, m);
+}
+
+int main() {
+    int n, m;
+    std::cin >> n >> m;
+    scanLine(m, n);
+}
