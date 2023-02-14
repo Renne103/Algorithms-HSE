@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+// идея взята из
+// https://www.cyberforum.ru/cpp-beginners/thread2856331.html
+
+void square(int **v, int n, int m) {
+    int **add_vec;
+    add_vec = new int *[n];
+    for (int i = 0; i < n; ++i) {
+        add_vec[i] = new int[m];
+    }
+    // делаем "кайму"
+    // заполняем 0-ой столбец дополнительного вектора
+    for (int i = 0; i < n; ++i) {
+        add_vec[i][0] = v[i][0];
+    }
+    // заполняем 0-ую строку дополнительного вектора
+    for (int i = 0; i < m; ++i) {
+        add_vec[0][i] = v[0][i];
+    }
+    for (int i = 1; i < n; ++i) {
+        for (int j = 1; j < m; ++j) {
+            if (v[i][j] == 0) {
+                add_vec[i][j] = v[i][j];
+            } else {
+                add_vec[i][j] = std::min(std::min(add_vec[i - 1][j], add_vec[i][j - 1]),
+                                         add_vec[i - 1][j - 1]) +
+                                1;
+            }
+        }
+    }
+    // находим максимальную длину
+    int maximum = -1;
+    int k = 0;
+    int l = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            if (add_vec[i][j] > maximum) {
+                maximum = add_vec[i][j];
+                l = i;
+                k = j;
+            }
+        }
+    }
+    std::cout << add_vec[l][k] << "\n";
+    for (int i = 0; i < n; i++) {
+        delete[] add_vec[i];
+    }
+    delete[] add_vec;
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    int n, m;
+    std::cin >> n >> m;
+    int **matrix = new int *[n];
+    for (int i = 0; i < n; i++) {
+        matrix[i] = new int[m];
+    }
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            std::cin >> matrix[i][j];
+        }
+    }
+    square(matrix, n, m);
+    for (int i = 0; i < n; i++) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+}
